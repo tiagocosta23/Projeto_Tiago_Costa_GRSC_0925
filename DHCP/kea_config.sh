@@ -6,7 +6,7 @@ sudo dnf install -y kea
 ########## Definir IP Estático ##########
 
 # Extrair o nome da interface de rede
-netinterface=$(nmcli device status | awk '/connected/ {print $1}' | sed -n '2p')
+netinterface=$(nmcli device status | awk '/connected/ {print $1}' | sed -n '3p')
 
 # Inserir o IP e CIDR desejado
 while true; do
