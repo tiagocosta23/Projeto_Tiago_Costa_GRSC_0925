@@ -15,7 +15,7 @@ while true; do
     echo "Digite a máscara de rede em CIDR: "
     read cidr
     fullip="${ip_estatico}/${cidr}"
-    echo "O IP estático configurado será: $fullip na interface $netinterface"
+    echo "O IP estático configurado será: $fullip na interface ens192"
 
     IFS="."
     set -- $ip_estatico
@@ -42,10 +42,10 @@ echo "Digite o DNS: "
 read dns
 
 # Aplicar as configurações de rede
-sudo nmcli connection up $netinterface
-sudo nmcli connection modify $netinterface ipv4.addresses $fullip ipv4.gateway $gateway ipv4.dns $dns ipv4.method manual
-sudo nmcli connection down $netinterface
-sudo nmcli connection up $netinterface
+sudo nmcli connection up ens192
+sudo nmcli connection modify ens192 ipv4.addresses $fullip ipv4.gateway $gateway ipv4.dns $dns ipv4.method manual
+sudo nmcli connection down ens192
+sudo nmcli connection up ens192
 
 ########## DHCP KEA ##########
 
@@ -57,7 +57,7 @@ while true; do
     echo "Digite a máscara de rede em CIDR: "
     read cidr_dhcp
     full_subnet_dhcp="${subnet_dhcp}/${cidr_dhcp}"
-    echo "A subnet configurada será: $full_subnet_dhcp na interface $netinterface"
+    echo "A subnet configurada será: $full_subnet_dhcp na interface ens192"
 
     IFS="."
     set -- $subnet_dhcp
@@ -96,7 +96,7 @@ sudo tee /etc/kea/kea-dhcp4.conf > /dev/null <<EOF
 "Dhcp4": {
     "interfaces-config": {
         // Definir a interface de rede
-        "interfaces": [ "$netinterface" ]
+        "interfaces": [ "ens192" ]
     },
     // Configuração do banco de dados de leases
     "lease-database": {
