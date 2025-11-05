@@ -43,7 +43,7 @@ read dns
 
 # Aplicar as configurações de rede
 sudo nmcli connection up ens192
-sudo nmcli connection modify ens192 ipv4.addresses $fullip ipv4.gateway $gateway ipv4.dns $dns ipv4.method manual
+sudo nmcli connection modify ens192 ipv4.addresses "$fullip" ipv4.gateway "$gateway" ipv4.dns "$dns" ipv4.method manual
 sudo nmcli connection down ens192
 sudo nmcli connection up ens192
 
