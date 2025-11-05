@@ -88,7 +88,7 @@ echo "Escolha o seu domínio"
 read domain_dhcp
 
 # Criar backup do ficheiro de configuração original
-sudo mv /etc/kea/kea-dhcp4.conf /etc/kea/kea-dhcp4.conf.bak
+sudo mv /etc/kea/kea-dhcp4.conf /etc/kea/kea-dhcp4.conf.bak 2>/dev/null || true
 
 # Configurar o Kea DHCP
 sudo tee /etc/kea/kea-dhcp4.conf > /dev/null <<EOF
