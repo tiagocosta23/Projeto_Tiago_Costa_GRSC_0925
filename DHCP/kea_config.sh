@@ -9,7 +9,7 @@ sudo dnf install -y kea
 netinterface=$(nmcli device status | awk '/connected/ {print $1}' | sed -n '2p')
 
 # Inserir o IP e CIDR desejado
-while true: do
+while true; do
     echo "Digite o IP estático desejado: "
     read ip_estatico
     echo "Digite a máscara de rede em CIDR: "
@@ -19,7 +19,7 @@ while true: do
 
     IFS="."
     set -- $ip_estatico
-    if [$1 -ge 255] || [$2 -gt 255] || [$3 -gt 255] || [$4 -gt 255]; then
+    if [ $1 -ge 255 ] || [ $2 -gt 255 ] || [ $3 -gt 255 ] || [ $4 -gt 255 ]; then
         echo "IP inválido. Tente novamente."
         continue
     elif [ $1 -eq 192 ] && [ $2 -eq 168 ]; then
@@ -50,7 +50,7 @@ sudo nmcli connection up $netinterface
 
 echo "Configurarção do Kea DHCP"
 
-while true: do
+while true; do
     echo "Digite o IP da subnet desejadq: "
     read subnet_dhcp
     echo "Digite a máscara de rede em CIDR: "
@@ -60,7 +60,7 @@ while true: do
 
     IFS="."
     set -- $subnet_dhcp
-    if [$1 -ge 255] || [$2 -gt 255] || [$3 -gt 255] || [$4 -gt 255]; then
+    if [ $1 -ge 255 ] || [ $2 -gt 255 ] || [ $3 -gt 255 ] || [ $4 -gt 255 ]; then
         echo "IP inválido. Tente novamente."
         continue
     elif [ $1 -eq 192 ] && [ $2 -eq 168 ]; then
@@ -74,14 +74,8 @@ while true: do
     fi
 done
 
-echo "Defina a máscara"
-read mask_dhcp
-
 echo "Defina o range (EX: 192.168.1.100 - 192.168.1.199)"
 read range_dhcp
-
-echo "Degite o broadcast"
-read broadcast_dhcp
 
 echo "Escolha o DNS"
 read dns_dhcp
@@ -89,7 +83,7 @@ read dns_dhcp
 echo "Defina o gateway"
 read gateway_dhcp
 
-echo "Escolha o seu domínio
+echo "Escolha o seu domínio"
 read domain_dhcp
 
 # Criar backup do ficheiro de configuração original
@@ -147,4 +141,4 @@ sudo chown root:kea /etc/kea/kea-dhcp4.conf
 sudo chmod 640 /etc/kea/kea-dhcp4.conf
 sudo systemctl enable --now kea-dhcp4
 sudo firewall-cmd --add-service=dhcp --permanent
-sudo firewall-cmd --runtime-to-permanent
+sudo firewall-cmd --reload
