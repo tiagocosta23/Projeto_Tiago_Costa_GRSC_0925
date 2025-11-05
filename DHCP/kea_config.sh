@@ -42,6 +42,7 @@ echo "Digite o DNS: "
 read dns
 
 # Aplicar as configurações de rede
+sudo nmcli connection up $netinterface
 sudo nmcli connection modify $netinterface ipv4.addresses $fullip ipv4.gateway $gateway ipv4.dns $dns ipv4.method manual
 sudo nmcli connection down $netinterface
 sudo nmcli connection up $netinterface
