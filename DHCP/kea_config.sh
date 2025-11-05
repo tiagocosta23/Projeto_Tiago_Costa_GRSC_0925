@@ -52,7 +52,7 @@ sudo nmcli connection up ens192
 echo "Configurarção do Kea DHCP"
 
 while true; do
-    echo "Digite o IP da subnet desejadq: "
+    echo "Digite o IP da subnet desejada: "
     read subnet_dhcp
     echo "Digite a máscara de rede em CIDR: "
     read cidr_dhcp
