@@ -186,7 +186,7 @@ while true; do
     if [ $escolha_teste -eq 1 ]; then
         ### Validaçáo de leases ###
         echo "Validaçáo de leases:"
-        cat /var/lib/kea/dhcp4.leases
+        cat /var/lib/kea/kea/dhcp4.leases
     elif [ $escolha_teste -eq 2 ]; then
         ### Teste de logs ###
         echo "Teste de logs:"
