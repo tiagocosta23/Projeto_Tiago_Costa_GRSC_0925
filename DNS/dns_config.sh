@@ -192,7 +192,7 @@ sudo chattr +i /etc/resolv.conf
 ################### Ajustar permissões, firewall e iniciar o serviço #######################
 
 sudo chown named:named /var/named/empresa.local.lan
-sudo chown named:named /var/named/$reverse_zone.db
+sudo chown named:named /var/named/${OCTETO_3}.${OCTETO_2}.${OCTETO_1}.db
 sudo firewall-cmd --add-service=dns --permanent
 sudo firewall-cmd --reload
 sudo systemctl enable --now named
