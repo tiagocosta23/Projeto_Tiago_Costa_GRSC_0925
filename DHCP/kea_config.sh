@@ -155,7 +155,7 @@ sudo tee /etc/kea/kea-dhcp4.conf > /dev/null <<EOF
 		    "name": "kea-dhcp4",
 		    "output-options": [
 			    {
-				    "output": "/var/log/kea-dhcp4.log"
+				    "output": "/var/log/kea/kea-dhcp4.log"
 			    }
 		],
 		"severity": "INFO",
