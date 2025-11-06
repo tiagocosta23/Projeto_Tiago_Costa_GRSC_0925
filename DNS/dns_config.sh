@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#
+# Nome: Tiago Costa
+# Turma: GRSC 0925
+# Projeto: Configuração de um Servidor DNS com BIND
+#
+
 #################################################
 #                                               #
 #             Definir o IP Estático             #
@@ -139,16 +145,16 @@ EOF
 
 sudo tee /var/named/empresa.local.lan > /dev/null <<EOF
 \$TTL 86400
-@   IN  SOA     servidor1.empresa.local. root.empresa.local. (
+@   IN  SOA     servidordns.empresa.local. root.empresa.local. (
         1761555569  ; Serial
         3600        ; Refresh
         1800        ; Retry
         604800      ; Expire
         86400       ; Minimum TTL
 )
-@               IN  NS      servidor1.empresa.local.
+@               IN  NS      servidordns.empresa.local.
 servidor1       IN  A       $ip_estatico
-@               IN  MX 10   servidor1.empresa.local.
+@               IN  MX 10   servidordns.empresa.local.
 www             IN  A       $ip_www
 EOF
 
@@ -156,22 +162,22 @@ EOF
 
 sudo tee /var/named/1.168.192.db > /dev/null <<EOF
 \$TTL 86400
-@   IN  SOA     servidor1.empresa.local. root.empresa.local. (
+@   IN  SOA     servidordns.empresa.local. root.empresa.local. (
         1761555569  ; Serial
         3600        ; Refresh
         1800        ; Retry
         604800      ; Expire
         86400       ; Minimum TTL
 )
-@               IN  NS      servidor1.empresa.local.
-$octeto         IN  PTR     servidor1.empresa.local.
+@               IN  NS      servidordns.empresa.local.
+$octeto         IN  PTR     servidordns.empresa.local.
 $octeto_www            IN  PTR     www.empresa.local.
 EOF
 
 ################### Ajustar permissões, firewall e iniciar o serviço #######################
 
 sudo chown named:named /var/named/empresa.local.lan
-sudo chown named:named /var/named/1.168.192.db
+sudo chown named:named /var/named/$reverse_zone.db
 sudo firewall-cmd --add-service=dns --permanent
 sudo firewall-cmd --reload
 sudo systemctl enable --now named
@@ -181,7 +187,7 @@ sudo systemctl status named
 ################### Testar o serviço DNS #######################
 
 while true; do
-    escho "Escolha um dos testes para validar o serviço DNS:"
+    echo "Escolha um dos testes para validar o serviço DNS:"
     echo "1 - Teste dig"
     echo "2 - Teste dig reverso"
     echo "3 - Teste nslookup"
@@ -199,11 +205,11 @@ while true; do
     elif [ $escolha_teste -eq 3 ]; then
         ### Teste nslookup ###
         echo "Teste de nslookup:"		
-        nslookup servidor1.empresa.local $ip_estatico
+        nslookup servidordns.empresa.local $ip_estatico
     elif [ $escolha_teste -eq 4 ]; then
         ### Teste ping esterno ###
         echo "Teste de ping externo:"	
-        ping 8.8.8.8	
+        ping www.google.com	
     elif [ $escolha_teste -eq 5 ]; then
         break
     else
