@@ -188,27 +188,25 @@ while true; do
     echo "4 - Teste ping externo"
     echo "5 - Sair"
     read escolha_teste 
-    if $escolha_teste -eq 1; then
+    if [ $escolha_teste -eq 1 ]; then
         ### Teste dig ###
         echo "Testes de dig:"
         dig @$ip_estatico empresa.local
-    elif $escolha_teste -eq 2; then
+    elif [ $escolha_teste -eq 2 ]; then
         ### Teste dig reverso ###
         echo "Teste de dig reverso:"
         dig -x $ip_estatico
-    elif $escolha_teste -eq 3; then
+    elif [ $escolha_teste -eq 3 ]; then
         ### Teste nslookup ###
         echo "Teste de nslookup:"		
         nslookup servidor1.empresa.local $ip_estatico
-    elif $escolha_teste -eq 4; then
+    elif [ $escolha_teste -eq 4 ]; then
         ### Teste ping esterno ###
         echo "Teste de ping externo:"	
         ping 8.8.8.8	
-    elif $escolha_teste -eq 5; then
+    elif [ $escolha_teste -eq 5 ]; then
         break
     else
         echo "Escolha inválida. Tente novamente."
     fi
 done
-
-#####SCRIPT DNS######
