@@ -186,15 +186,15 @@ while true; do
     if [ $escolha_teste -eq 1 ]; then
         ### Validaçáo de leases ###
         echo "Validaçáo de leases:"
-        cat /var/lib/kea/kea/dhcp4.leases
+        sudo cat /var/lib/kea/dhcp4.leases
     elif [ $escolha_teste -eq 2 ]; then
         ### Teste de logs ###
         echo "Teste de logs:"
-        tail -f /var/log/kea-dhcp4.log
+        sudo tail -f /var/log/kea/kea-dhcp4.log
     elif [ $escolha_teste -eq 3 ]; then
         ### Verificação de escuta ###
         echo "Verificação de escuta:"		
-        ss -lun | grep 67	
+        sudo ss -lun | grep 67	
     elif [ $escolha_teste -eq 4 ]; then
         break
     else
