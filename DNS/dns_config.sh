@@ -110,7 +110,7 @@ options {
 
         recursion yes;
 
-        forward only;
+        forward first;
         forwarders { 8.8.8.8; 1.1.1.1; };
 };
 
@@ -160,7 +160,7 @@ EOF
 
 ################### Criar os ficheiro de zona reversa #######################
 
-sudo tee /var/named/1.168.192.db > /dev/null <<EOF
+sudo tee /var/named/$reverse_zone.db > /dev/null <<EOF
 \$TTL 86400
 @   IN  SOA     servidordns.empresa.local. root.empresa.local. (
         1761555569  ; Serial
