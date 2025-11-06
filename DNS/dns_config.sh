@@ -220,7 +220,7 @@ while true; do
     elif [ $escolha_teste -eq 3 ]; then
         ### Teste nslookup ###
         echo "Teste de nslookup:"		
-        nslookup servidordns.empresa.local $ip_estatico
+        nslookup servidordns.empresa.local
     elif [ $escolha_teste -eq 4 ]; then
         ### Teste ping esterno ###
         echo "Teste de ping externo:"	
