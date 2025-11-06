@@ -1,12 +1,16 @@
 #!/bin/bash
 
-### Instalar o serviço Kea DHCP ###
-sudo dnf install -y kea
+#
+# Nome: Tiago Costa
+# Turma: GRSC 0925
+# Projeto: Configuração de um Servidor DHCP com Kea
+#
 
-########## Definir IP Estático ##########
-
-# Extrair o nome da interface de rede
-netinterface=$(nmcli device status | awk '/connected/ {print $1}' | sed -n '3p')
+#################################################
+#                                               #
+#             Definir o IP Estático             #
+#                                               #
+#################################################
 
 # Inserir o IP e CIDR desejado
 while true; do
@@ -47,9 +51,19 @@ sudo nmcli connection modify ens192 ipv4.addresses "$fullip" ipv4.gateway "$gate
 sudo nmcli connection down ens192
 sudo nmcli connection up ens192
 
-########## DHCP KEA ##########
+###################################################
+#                                                 #
+#           Configuração do serviço DHCP          #
+#                                                 #
+###################################################
+
+################### Instalar o Kea DHCP #######################
+
+sudo dnf install -y kea
 
 echo "Configurarção do Kea DHCP"
+
+################### Definir a subnet para o serviço DHCP #######################
 
 while true; do
     echo "Digite o IP da subnet desejada: "
@@ -75,6 +89,8 @@ while true; do
     fi
 done
 
+################# Definir o range, DNS, gateway e domínio para o serviço DHCP #######################
+
 echo "Defina o range (EX: 192.168.1.100 - 192.168.1.199)"
 read range_dhcp
 
@@ -87,10 +103,10 @@ read gateway_dhcp
 echo "Escolha o seu domínio"
 read domain_dhcp
 
-# Criar backup do ficheiro de configuração original
+################### Criar o backup e configurar o Kea DHCP #######################
+
 sudo mv /etc/kea/kea-dhcp4.conf /etc/kea/kea-dhcp4.conf.bak 2>/dev/null || true
 
-# Configurar o Kea DHCP
 sudo tee /etc/kea/kea-dhcp4.conf > /dev/null <<EOF
 {
 "Dhcp4": {
@@ -134,12 +150,54 @@ sudo tee /etc/kea/kea-dhcp4.conf > /dev/null <<EOF
             ]
         }
     ]
+    "loggers": [
+    {
+		"name": "kea-dhcp4",
+		"output-options": [
+			{
+				"output": "/var/log/kea/kea-dhcp4.log"
+			}
+		],
+		"severity": "INFO",
+		"debuglevel": 0
+        }
+    ]
 }
 }
 EOF
+
+################### Ajustar permissões, firewall e iniciar o serviço #######################
 
 sudo chown root:kea /etc/kea/kea-dhcp4.conf
 sudo chmod 640 /etc/kea/kea-dhcp4.conf
 sudo systemctl enable --now kea-dhcp4
 sudo firewall-cmd --add-service=dhcp --permanent
 sudo firewall-cmd --reload
+
+################### Testar o serviço DHCP #######################
+
+while true; do
+    echo "Escolha um dos testes para validar o serviço DHCP:"
+    echo "1 - Validação de leases"
+    echo "2 - Teste de logs"
+    echo "3 - Verificação de escuta"
+    echo "4 - Sair"
+    read escolha_teste 
+    if [ $escolha_teste -eq 1 ]; then
+        ### Validaçáo de leases ###
+        echo "Validaçáo de leases:"
+        cat /var/lib/kea/dhcp4.leases
+    elif [ $escolha_teste -eq 2 ]; then
+        ### Teste de logs ###
+        echo "Teste de logs:"
+        tail -f /var/log/kea-dhcp4.log
+    elif [ $escolha_teste -eq 3 ]; then
+        ### Verificação de escuta ###
+        echo "Verificação de escuta:"		
+        ss -lun | grep 67	
+    elif [ $escolha_teste -eq 4 ]; then
+        break
+    else
+        echo "Escolha inválida. Tente novamente."
+    fi
+done
