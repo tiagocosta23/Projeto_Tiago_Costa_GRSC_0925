@@ -206,7 +206,7 @@ while true; do
     if [ $escolha_teste -eq 1 ]; then
         ### Teste dig ###
         echo "Testes de dig:"
-        dig @$ip_estatico empresa.local
+        dig empresa.local
     elif [ $escolha_teste -eq 2 ]; then
         ### Teste dig reverso ###
         echo "Teste de dig reverso:"
