@@ -153,7 +153,7 @@ sudo tee /var/named/empresa.local.lan > /dev/null <<EOF
         86400       ; Minimum TTL
 )
 @               IN  NS      servidordns.empresa.local.
-servidor1       IN  A       $ip_estatico
+servidordns       IN  A       $ip_estatico
 @               IN  MX 10   servidordns.empresa.local.
 www             IN  A       $ip_www
 EOF
