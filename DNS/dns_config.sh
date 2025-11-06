@@ -165,7 +165,7 @@ EOF
 
 ################### Criar os ficheiro de zona reversa #######################
 
-sudo tee /var/named/${OCTETO_1}.${OCTETO_2}.${OCTETO_3}.db > /dev/null <<EOF
+sudo tee /var/named/${OCTETO_3}.${OCTETO_2}.${OCTETO_1}.db > /dev/null <<EOF
 \$TTL 86400
 @   IN  SOA     servidordns.empresa.local. root.empresa.local. (
         1761555569  ; Serial
