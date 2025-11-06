@@ -199,7 +199,23 @@ sudo systemctl enable --now named
 sudo systemctl start named
 sudo systemctl status named
 
+################### IP Forwarding e Routing ####################
+
+sudo tee /proc/sys/net/ipv4/ip_forward > /dev/null <<EOF
+1
+EOF
+
+sudo sed -i 's/^#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+sudo sysctl -p
+
+sudo iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o ens160 -j MASQUERADE
+
+sudo firewall-cmd --zone=public --add-masquerade --permanent
+sudo firewall-cmd --reload
+
 ################### Testar o serviço DNS #######################
+
+
 
 while true; do
     echo "Escolha um dos testes para validar o serviço DNS:"
