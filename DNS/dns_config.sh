@@ -86,6 +86,11 @@ IFS="."
 set -- $subnet_dns
 reverse_zone="${3}.${2}.${1}"
 
+OCTETO_1=$(echo "$subnet_dns" | cut -d '.' -f1)
+OCTETO_2=$(echo "$subnet_dns" | cut -d '.' -f2)
+OCTETO_3=$(echo "$subnet_dns" | cut -d '.' -f3)
+OCTETO_4=$(echo "$subnet_dns" | cut -d '.' -f4)
+
 ################### Instalar e configurar o BIND DNS #######################
 
 sudo dnf install -y bind bind-utils
@@ -160,7 +165,7 @@ EOF
 
 ################### Criar os ficheiro de zona reversa #######################
 
-sudo tee /var/named/${reverse_zone}.db > /dev/null <<EOF
+sudo tee /var/named/${OCTETO_1}.${OCTETO_2}.${OCTETO_3}.db > /dev/null <<EOF
 \$TTL 86400
 @   IN  SOA     servidordns.empresa.local. root.empresa.local. (
         1761555569  ; Serial
