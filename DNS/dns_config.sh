@@ -164,8 +164,6 @@ www             IN  A       $ip_www
 EOF
 
 ################### Criar os ficheiro de zona reversa #######################
-echo "$reverse_zone"
-echo "${OCTETO_3}.${OCTETO_2}.${OCTETO_1}"
 sudo tee /var/named/${OCTETO_3}.${OCTETO_2}.${OCTETO_1}.db > /dev/null <<EOF
 \$TTL 86400
 @   IN  SOA     servidordns.empresa.local. root.empresa.local. (
